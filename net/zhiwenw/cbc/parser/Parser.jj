@@ -100,6 +100,479 @@ MORE: { <"\""> : IN_STRING }                           // rule1
     <STRING: "\""> : DEFAULT
 }
 
+// Grammar
+
+void compliation_unit():
+{}
+{
+    import_stmts() top_defs() <EOF>
+}
+
+void import_stmts():
+{}
+{
+    import_stmts *
+}
+void import_stmt():
+{}
+{
+    <IMPORT> name ("." name())* ";"
+}
+void top_defs():
+{ }
+{
+    ( LOOKAHEAD(storage() typeref() <IDENTIFIER> "(")
+      defun()
+    | (LOOKAHEAD(3))
+      defvars()
+    | defconst()
+    | defstruct()
+    | defunion()
+    | typedef()
+}
+
+void defvars():
+{
+}
+{
+    storage() type() name() ["=" expr()]
+    ("," name() ["=" expr()]) * ";"
+}
+
+void defconst():
+{}
+{
+    <CONST> type() name() = expr() ";"
+}
+
+void defun():
+{}
+{
+    storage() type() name() "(" params() ")" block()
+}
+
+void storage():
+{}
+{
+    [<STATIC>]
+}
+
+void params():
+{}
+{
+    LOOKAHEAD(<VOID> ")")
+    <VOID>
+  | fixedparams() ["," "..."]
+}
+
+void fixedparams():
+{}
+{
+    param()
+    ( LOOKAHEAD(2) "," pamam() ) *
+}
+
+void param():
+{}
+{
+    type() name
+}
+
+void block():
+{}
+{
+    "{" defvar_list() stmts() "}"
+}
+
+void defvar_list():
+{ }
+{
+    ( defvars() )*
+}
+
+void defstruct():
+{}
+{
+    <STRUCT> name() member_list() ";"
+}
+
+void defunion():
+{}
+{
+    <UNION> name() member_list() ";"
+}
+
+void member_list():
+{}
+{
+    "{" (slot() ";") * "}"
+}
+
+void slot():
+{ }
+{
+    type() name()
+}
+
+void funcdecl():
+{}
+{
+    <EXTERN> typeref() name() "(" params() ")" ";"
+}
+
+void vardecl():
+{}
+{
+    <EXTERN> type() name() ";" ;
+}
+
+void type():
+{}
+{
+    typeref()
+}
+
+void typeref():
+{ }
+{
+    typeref_base()
+    (   LOOKAHEAD(2)
+        "[" "]"
+        | "[" <INTEGER> "]"
+        | "*"
+        | "(" param_typerefs() ")"
+    ) *
+}
+
+void param_typerefs():
+{}
+{
+    LOOKAHEAD(<VOID> ")")
+    <VOID>
+    | fixedparam_typerefs()
+        ["," "..."]
+}
+
+void fixedparam_typerefs():
+{}
+{
+    typeref()
+    ( LOOKAHEAD(2) "," typeref() )*
+}
+
+
+void typeref_base():
+{}
+{
+    <VOID>
+    | <CHAR>
+    | <SHORT>
+    | <INT>
+    | <LONG>
+    | LOOKAHEAD(2) <UNSIGNED> <CHAR>
+    | LOOKAHEAD(2) <UNSIGNED> <SHORT>
+    | LOOKAHEAD(2) <UNSIGNED> <INT>
+    | <UNSIGNED> <LONG>
+    | <STRUCT> <IDENTIFIER>
+    | <UNION> <IDENTIFIER>
+    | LOOKAHEAD({isType(getToken(1).image)}) <IDENTIFIER>
+}
+
+void typedef():
+{}
+{
+    <TYPEDEF> typeref() <IDENTIFIER> ";"
+}
+
+void stmts():
+{}
+{
+    (stmt) *
+}
+
+void stmt():
+{}
+{
+    (
+        ";"
+        | LOOKAHEAD(2) labeled_stmt()
+        | expr() ";"
+        | block()
+        | if_stmt()
+        | while_stmt()
+        | dowhile_stmt()
+        | for_stmt()
+        | switch_stmt()
+        | break_stmt()
+        | continue_stmt()
+        | goto_stmt()
+        | return_stmt()
+    )
+}
+
+void labeled_stmt():
+{}
+{
+    <IDENTIFIER> ":" stmt()
+}
+
+void if_stmt():
+{}
+{
+    <IF> "(" expr() ")" stmt()
+         [LOOKAHEAD(1) <ELSE> stmt()]
+}
+
+void while_stmt():
+{}
+{
+    <WHILE> "(" expr() ")" stmt()
+}
+
+void dowhile_stmt():
+{}
+{
+    <DO> stmt()
+    <WHILE> "(" expr() ")" ";"
+}
+
+void for_stmt():
+{}
+{
+    <FOR> "(" [expr()] ";"
+              [expr()] ";"
+              [expr()] ")" stmt()
+}
+
+void switch_stmt():
+{}
+{
+    <SWITCH> "(" expr() ")" "{" case_clauses() "}"
+}
+
+void case_clauses():
+{}
+{
+    ( case_clause() ) *
+
+        [default_clause()]
+}
+
+void default_clause():
+{}
+{
+    <DEFAULT_> ":" case_body()
+}
+
+void case_clause():
+{}
+{
+    cases() case_body()
+}
+
+void cases():
+{}
+{
+    (<CASE> primary() ":" )+
+}
+
+void case_body():
+{}
+{
+    ( stmt() )+
+}
+
+void goto_stmt():
+{}
+{
+    <GOTO> <IDENTIFIER> ";"
+}
+
+void break_stmt():
+{}
+{
+    <BREAK> ";"
+}
+
+void continue_stmt():
+{}
+{
+    <CONTINUE> ";"
+}
+
+void return_stmt():
+{}
+{
+    LOOKAHEAD(2) <RETURN> ";"
+  | <RETURN> expr() ";"
+}
+
+void expr():
+{}
+{
+    LOOKAHEAD(term() "=")
+    term() "=" expr()
+    | LOOKAHEAD(term() opassign_op())
+      term() opassign_op() expr()
+    | expr10()
+}
+
+void opassign_op(): {}
+{
+    ( "+="  { return "+"; }
+    | "-="  { return "-"; }
+    | "*="  { return "*"; }
+    | "/="  { return "/"; }
+    | "%="  { return "%"; }
+    | "&="  { return "&"; }
+    | "|="  { return "|"; }
+    | "^="  { return "^"; }
+    | "<<=" { return "<<"; }
+    | ">>=" { return ">>"; }
+    )
+}
+
+void expr10():
+{}
+{
+    expr9() ["?" expr() ":" expr10()]
+}
+
+void expr9():
+{}
+{
+    expr8() ("||" expr8()) *
+}
+
+void expr8():
+{}
+{
+    expr7() ("&&" expr7()) *
+}
+
+void expr7():
+{}
+{
+    expr6() (
+                ">" expr6()
+               |"<" expr6()
+               |">=" expr6()
+               |"<=" expr6()
+               |"==" expr6()
+               |"!=" expr6() )*
+}
+
+void expr6():
+{}
+{
+    expr5() ("|" expr5())
+}
+
+void expr5():
+{}
+{
+    expr4() ("^" expr4()) *
+}
+
+void expr4():
+{}
+{
+    expr3() ( "&" expr3() ) *
+}
+
+void expr3():
+{}
+{
+    expr2() (">>" expr2()
+             | "<<" expr2() ) *
+}
+
+void expr2():
+{}
+{
+    expr1() ("+" expr1()
+            | "-" expr1() 
+            ) *
+}
+
+void expr1():
+{}
+{
+    term() ( "*" term())
+           | "/" term()
+           | "%" term()
+           ) *
+}
+
+void term():
+{}
+{
+    LOOKAHEAD("(" type()))
+    "(" type() ")" term()
+    | unary()
+
+}
+
+void unary():
+{}
+{
+      "++" unary()
+    | "--" unary()
+    | "+" term()
+    | "-" term()
+    | "!" term()
+    | "~" term()
+    | "--" term()
+    | LOOKAHEAD(3) <SIZEOF> "(" type() ")"
+    | <SIZEOF> unary()
+    | postfix()
+}
+
+void postfix():
+{}
+{
+    primary()
+    (
+        "++"
+      | "--"
+      | "[" expr() "]"
+      | "." name()
+      | "->" name()
+      | "(" args() ")"
+    ) *
+}
+
+String name():
+{ Token t;}
+{
+    t=<IDENTIFIER> {return t.image;}
+}
+
+void args():
+{}
+{
+    [ expr()
+      ("," expr())* ]
+}
+
+void primary():
+{}
+{
+    <INTEGER>
+  | <CHARACTER>
+  | <STRING>
+  | <IDENTIFIER>
+  | "(" expr() ")"
+}
+
+
+
+
+
+
+
+
+####################################################################################################
 String Input() :
 { Token id;}
 {
@@ -111,5 +584,4 @@ String Input() :
 void print() :
 { Token t1;}
 {
-    t1=<STRING> {System.out.println("In print: " + t1.image);}
-}
+    t1=<STRING> {System.out.println("In print: " + t1.image);}                    mnnnn}
