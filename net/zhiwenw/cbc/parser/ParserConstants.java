@@ -9,82 +9,95 @@ public interface ParserConstants {
   /** End of File. */
   int EOF = 0;
   /** RegularExpression Id. */
-  int VOID = 1;
+  int SPACES = 1;
   /** RegularExpression Id. */
-  int CHAR = 2;
+  int BLOCK_COMMENT = 4;
   /** RegularExpression Id. */
-  int SHORT = 3;
+  int LINE_COMMENT = 5;
   /** RegularExpression Id. */
-  int INT = 4;
+  int VOID = 6;
   /** RegularExpression Id. */
-  int LONG = 5;
+  int CHAR = 7;
   /** RegularExpression Id. */
-  int STRUCT = 6;
+  int SHORT = 8;
   /** RegularExpression Id. */
-  int UNION = 7;
+  int INT = 9;
   /** RegularExpression Id. */
-  int ENUM = 8;
+  int LONG = 10;
   /** RegularExpression Id. */
-  int STATIC = 9;
+  int STRUCT = 11;
   /** RegularExpression Id. */
-  int EXTERN = 10;
+  int UNION = 12;
   /** RegularExpression Id. */
-  int CONST = 11;
+  int ENUM = 13;
   /** RegularExpression Id. */
-  int SIGNED = 12;
+  int STATIC = 14;
   /** RegularExpression Id. */
-  int UNSIGNED = 13;
+  int EXTERN = 15;
   /** RegularExpression Id. */
-  int IF = 14;
+  int CONST = 16;
   /** RegularExpression Id. */
-  int ELSE = 15;
+  int SIGNED = 17;
   /** RegularExpression Id. */
-  int SWITCH = 16;
+  int UNSIGNED = 18;
   /** RegularExpression Id. */
-  int CASE = 17;
+  int IF = 19;
   /** RegularExpression Id. */
-  int DEFAULT_ = 18;
+  int ELSE = 20;
   /** RegularExpression Id. */
-  int WHILE = 19;
+  int SWITCH = 21;
   /** RegularExpression Id. */
-  int DO = 20;
+  int CASE = 22;
   /** RegularExpression Id. */
-  int FOR = 21;
+  int DEFAULT_ = 23;
   /** RegularExpression Id. */
-  int RETURN = 22;
+  int WHILE = 24;
   /** RegularExpression Id. */
-  int BREAK = 23;
+  int DO = 25;
   /** RegularExpression Id. */
-  int CONTINUE = 24;
+  int FOR = 26;
   /** RegularExpression Id. */
-  int GOTO = 25;
+  int RETURN = 27;
   /** RegularExpression Id. */
-  int TYPEDEF = 26;
+  int BREAK = 28;
   /** RegularExpression Id. */
-  int IMPORT = 27;
+  int CONTINUE = 29;
   /** RegularExpression Id. */
-  int SIZEOF = 28;
+  int GOTO = 30;
   /** RegularExpression Id. */
-  int IDENTIFIER = 29;
+  int TYPEDEF = 31;
   /** RegularExpression Id. */
-  int INTEGER = 30;
+  int IMPORT = 32;
   /** RegularExpression Id. */
-  int CHARACTER = 35;
+  int SIZEOF = 33;
   /** RegularExpression Id. */
-  int STRING = 40;
+  int IDENTIFIER = 34;
+  /** RegularExpression Id. */
+  int INTEGER = 35;
+  /** RegularExpression Id. */
+  int CHARACTER = 40;
+  /** RegularExpression Id. */
+  int STRING = 45;
 
   /** Lexical state. */
   int DEFAULT = 0;
   /** Lexical state. */
-  int IN_CHARACTER = 1;
+  int IN_BLOCK_COMMENT = 1;
   /** Lexical state. */
-  int CHARACTER_TERM = 2;
+  int IN_CHARACTER = 2;
   /** Lexical state. */
-  int IN_STRING = 3;
+  int CHARACTER_TERM = 3;
+  /** Lexical state. */
+  int IN_STRING = 4;
 
   /** Literal token values. */
   String[] tokenImage = {
     "<EOF>",
+    "<SPACES>",
+    "\"/*\"",
+    "<token of kind 3>",
+    "\"*/\"",
+    "<LINE_COMMENT>",
     "\"void\"",
     "\"char\"",
     "\"short\"",
@@ -116,15 +129,61 @@ public interface ParserConstants {
     "<IDENTIFIER>",
     "<INTEGER>",
     "\"\\\'\"",
-    "<token of kind 32>",
-    "<token of kind 33>",
-    "<token of kind 34>",
-    "\"\\\'\"",
-    "\"\\\"\"",
     "<token of kind 37>",
     "<token of kind 38>",
     "<token of kind 39>",
+    "\"\\\'\"",
     "\"\\\"\"",
+    "<token of kind 42>",
+    "<token of kind 43>",
+    "<token of kind 44>",
+    "\"\\\"\"",
+    "\".\"",
+    "\";\"",
+    "\"(\"",
+    "\"=\"",
+    "\",\"",
+    "\")\"",
+    "\"...\"",
+    "\"{\"",
+    "\"}\"",
+    "\"[\"",
+    "\"]\"",
+    "\"*\"",
+    "\":\"",
+    "\"+=\"",
+    "\"-=\"",
+    "\"*=\"",
+    "\"/=\"",
+    "\"%=\"",
+    "\"&=\"",
+    "\"|=\"",
+    "\"^=\"",
+    "\"<<=\"",
+    "\">>=\"",
+    "\"?\"",
+    "\"||\"",
+    "\"&&\"",
+    "\">\"",
+    "\"<\"",
+    "\">=\"",
+    "\"<=\"",
+    "\"==\"",
+    "\"!=\"",
+    "\"|\"",
+    "\"^\"",
+    "\"&\"",
+    "\">>\"",
+    "\"<<\"",
+    "\"+\"",
+    "\"-\"",
+    "\"/\"",
+    "\"%\"",
+    "\"++\"",
+    "\"--\"",
+    "\"!\"",
+    "\"~\"",
+    "\"->\"",
   };
 
 }

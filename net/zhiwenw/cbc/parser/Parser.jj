@@ -8,14 +8,15 @@ options {
 
 PARSER_BEGIN(Parser)
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 public class Parser {
 
-  /** Main entry point. */
-  public static void main(String args[]) throws ParseException {
-    Parser parser = new Parser(System.in);
-    parser.print();
-  }
-
+   private boolean isType(String name) {
+        return false;
+    }
 }
 
 PARSER_END(Parser)
@@ -26,6 +27,9 @@ PARSER_END(Parser)
  * // https://github.com/aamine/cbc/blob/master/net/loveruby/cflat/parser/Parser.jj
  */
 
+
+// linear-white-spaces
+SPECIAL_TOKEN: { <SPACES: ([" ", "\t", "\n", "\r", "\f"])+> }
 
 // block comment
 MORE: { <"/*"> : IN_BLOCK_COMMENT }
@@ -111,24 +115,25 @@ void compliation_unit():
 void import_stmts():
 {}
 {
-    import_stmts *
+    (import_stmt() ) *
 }
 void import_stmt():
 {}
 {
-    <IMPORT> name ("." name())* ";"
+    <IMPORT> name() ("." name())* ";"
 }
 void top_defs():
 { }
 {
     ( LOOKAHEAD(storage() typeref() <IDENTIFIER> "(")
       defun()
-    | (LOOKAHEAD(3))
+    | LOOKAHEAD(3)
       defvars()
     | defconst()
     | defstruct()
     | defunion()
     | typedef()
+    ) *
 }
 
 void defvars():
@@ -142,7 +147,7 @@ void defvars():
 void defconst():
 {}
 {
-    <CONST> type() name() = expr() ";"
+    <CONST> type() name() "=" expr() ";"
 }
 
 void defun():
@@ -169,13 +174,13 @@ void fixedparams():
 {}
 {
     param()
-    ( LOOKAHEAD(2) "," pamam() ) *
+    ( LOOKAHEAD(2) "," param() ) *
 }
 
 void param():
 {}
 {
-    type() name
+    type() name()
 }
 
 void block():
@@ -223,7 +228,7 @@ void funcdecl():
 void vardecl():
 {}
 {
-    <EXTERN> type() name() ";" ;
+    <EXTERN> type() name() ";"
 }
 
 void type():
@@ -287,7 +292,7 @@ void typedef():
 void stmts():
 {}
 {
-    (stmt) *
+    (stmt()) *
 }
 
 void stmt():
@@ -320,6 +325,7 @@ void if_stmt():
 {}
 {
     <IF> "(" expr() ")" stmt()
+
          [LOOKAHEAD(1) <ELSE> stmt()]
 }
 
@@ -417,7 +423,7 @@ void expr():
     | expr10()
 }
 
-void opassign_op(): {}
+String opassign_op(): {}
 {
     ( "+="  { return "+"; }
     | "-="  { return "-"; }
@@ -465,7 +471,7 @@ void expr7():
 void expr6():
 {}
 {
-    expr5() ("|" expr5())
+    expr5() ("|" expr5()) *
 }
 
 void expr5():
@@ -498,7 +504,7 @@ void expr2():
 void expr1():
 {}
 {
-    term() ( "*" term())
+    term() ( "*" term()
            | "/" term()
            | "%" term()
            ) *
@@ -507,7 +513,7 @@ void expr1():
 void term():
 {}
 {
-    LOOKAHEAD("(" type()))
+    LOOKAHEAD("(" type())
     "(" type() ")" term()
     | unary()
 
@@ -522,7 +528,8 @@ void unary():
     | "-" term()
     | "!" term()
     | "~" term()
-    | "--" term()
+    | "*" term()
+    | "&" term()
     | LOOKAHEAD(3) <SIZEOF> "(" type() ")"
     | <SIZEOF> unary()
     | postfix()
@@ -571,17 +578,3 @@ void primary():
 
 
 
-
-####################################################################################################
-String Input() :
-{ Token id;}
-{
-  id=<VOID> {
-      System.out.println("in void: ");
-      return id.image;}
-}
-
-void print() :
-{ Token t1;}
-{
-    t1=<STRING> {System.out.println("In print: " + t1.image);}                    mnnnn}
