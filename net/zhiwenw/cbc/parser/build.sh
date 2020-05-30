@@ -1,1 +1,0 @@
-javacc Parser.jj && javac Main.java  -Xlint -Xlint:-serial

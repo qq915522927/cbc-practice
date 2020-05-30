@@ -1,11 +1,15 @@
+package net.zhiwenw.cbc.main;
+
+import net.zhiwenw.cbc.parser.ParseException;
+import net.zhiwenw.cbc.parser.Parser;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.Scanner;
 
 
 public class Main {
-    /** Main entry point. */
+    /** net.zhiwenw.cbc.main.Main entry point. */
     public static void main(String args[]) throws ParseException {
         File file = new File(args[0]);
         try {

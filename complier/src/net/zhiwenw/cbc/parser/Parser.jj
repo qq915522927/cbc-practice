@@ -8,6 +8,8 @@ options {
 
 PARSER_BEGIN(Parser)
 
+package net.zhiwenw.cbc.parser;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -24,7 +26,7 @@ PARSER_END(Parser)
 
 /*
  * Lexical Rules, copy from the origin repository
- * // https://github.com/aamine/cbc/blob/master/net/loveruby/cflat/parser/Parser.jj
+ * // https://github.com/aamine/cbc/blob/master/net/loveruby/cflat/parser2/Parser.jj
  */
 
 
