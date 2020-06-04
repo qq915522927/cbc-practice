@@ -11,10 +11,11 @@ import java.io.FileNotFoundException;
 public class Main {
     /** net.zhiwenw.cbc.main.Main entry point. */
     public static void main(String args[]) throws ParseException {
+        String filename = args[0];
         File file = new File(args[0]);
         try {
             FileInputStream stream = new FileInputStream(file);
-            Parser parser = new Parser(stream);
+            Parser parser = new Parser(filename, stream);
             parser.compliation_unit();
         } catch (FileNotFoundException e) {
             System.out.println("Error:");

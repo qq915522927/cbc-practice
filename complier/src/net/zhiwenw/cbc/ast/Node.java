@@ -18,9 +18,9 @@ abstract public class Node implements Dumpable {
 
     @Override
     public void dump(Dumper d) {
-        d.printClass(this, location());
-        _dump(d);
+//        d.printClass(this, location());
+//        _dump(d);
     }
 
-    abstract protected void _dump(Dumper d);
+//    abstract protected void _dump(Dumper d);
 }

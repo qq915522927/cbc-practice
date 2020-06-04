@@ -1,11 +1,14 @@
 package net.zhiwenw.cbc.ast;
 
-import parser
+import net.zhiwenw.cbc.parser.*;
 
 public class Location {
     protected String sourceName;
     protected CflatToken token;
 
+    public Location() {
+
+    }
     public Location(String sourceName, Token token) {
         this(sourceName, new CflatToken(token));
     }
