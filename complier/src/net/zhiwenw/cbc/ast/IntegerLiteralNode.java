@@ -6,4 +6,9 @@ public class IntegerLiteralNode extends LiteralNode {
     public IntegerLiteralNode(Location loc, TypeRef ref, long value) {
         super(loc, ref);
     }
+
+    @Override
+    public <S, E> E accept(ASTVisitor<S, E> visitor) {
+        return visitor.visit(this);
+    }
 }

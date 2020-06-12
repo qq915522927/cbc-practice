@@ -13,6 +13,10 @@ public class Params extends ParamSlots<Parameter> {
         super(loc, paramDescs, false);
 
     }
+
+    public List<Parameter> parameters() {
+        return paramDescriptors;
+    }
     public ParamTypeRefs parametersTypeRef() {
         List<TypeRef> typerefs = new ArrayList<TypeRef>();
         Parameter[] paramDescriptors = new Parameter[2];

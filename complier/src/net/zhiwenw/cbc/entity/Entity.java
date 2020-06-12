@@ -3,7 +3,7 @@ package net.zhiwenw.cbc.entity;
 import net.zhiwenw.cbc.ast.Location;
 import net.zhiwenw.cbc.ast.TypeNode;
 
-public class Entity {
+abstract public class Entity {
     protected String name;
     protected boolean isPrivate;
     protected TypeNode typeNode;
@@ -19,4 +19,5 @@ public class Entity {
         return typeNode.location();
     }
 
+    abstract public <T> T accept(EntityVisitor<T> visitor);
 }

@@ -5,4 +5,9 @@ public class BreakNode extends StmtNode{
         super(loc);
     }
 
+    @Override
+    public <S, E> S accept(ASTVisitor<S, E> visitor) {
+        return visitor.visit(this);
+    }
+
 }

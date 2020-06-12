@@ -13,4 +13,8 @@ public class CompositeTypeDefinition extends TypeDefinition {
         super(loc, ref, name);
         members = membs;
     }
+
+    public List<Slot> members() {
+        return members;
+    }
 }

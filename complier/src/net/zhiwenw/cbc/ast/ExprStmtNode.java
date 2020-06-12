@@ -7,4 +7,12 @@ public class ExprStmtNode extends StmtNode {
         super(loc);
         this.expr = expr;
     }
+
+    public ExprNode expr() {
+        return expr;
+    }
+
+    public <S,E> S accept(ASTVisitor<S,E> visitor) {
+        return visitor.visit(this);
+    }
 }

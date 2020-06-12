@@ -6,4 +6,8 @@ public class GotoNode extends StmtNode {
         super(loc);
 
     }
+    @Override
+    public <S, E> S accept(ASTVisitor<S, E> visitor) {
+        return visitor.visit(this);
+    }
 }

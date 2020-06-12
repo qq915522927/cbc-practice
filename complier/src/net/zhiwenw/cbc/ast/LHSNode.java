@@ -1,4 +1,4 @@
 package net.zhiwenw.cbc.ast;
 
-public class LHSNode extends ExprNode {
+abstract public class LHSNode extends ExprNode {
 }

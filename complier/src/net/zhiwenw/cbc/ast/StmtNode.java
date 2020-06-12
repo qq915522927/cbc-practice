@@ -1,6 +1,8 @@
 package net.zhiwenw.cbc.ast;
 
-public class StmtNode {
+import net.zhiwenw.cbc.compiler.Visitor;
+
+abstract public class StmtNode {
     protected Location location;
 
     public StmtNode(Location loc) {
@@ -10,4 +12,7 @@ public class StmtNode {
     public Location location() {
         return location;
     }
+
+    abstract public <S,E> S accept(ASTVisitor<S,E> visitor);
+
 }

@@ -1,8 +1,16 @@
 import stdio;
 
+struct Hello {
+    int i;
+};
+
 int
 main(int argc, char **argv)
 {
+    int i = 10;
     puts("Hello, World!");
+    while(i<3) {
+        i++;
+    }
     return 0;
 }
