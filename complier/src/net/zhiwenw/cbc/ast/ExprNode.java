@@ -7,9 +7,6 @@ abstract public class ExprNode extends Node {
     public Location location() {
         return null;
     }
-    public void accept(Visitor visitor) {
-
-    }
 
     abstract public <S,E> E accept(ASTVisitor<S,E> visitor);
 }

@@ -1,5 +1,8 @@
 import stdio;
 
+int global = 3;
+const int constVar = 3;
+
 struct Hello {
     int i;
 };
@@ -12,5 +15,7 @@ main(int argc, char **argv)
     while(i<3) {
         i++;
     }
+    global++;
+    constVar--;
     return 0;
 }

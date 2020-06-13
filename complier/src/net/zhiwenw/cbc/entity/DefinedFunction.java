@@ -10,6 +10,8 @@ public class DefinedFunction extends Function {
     protected Params params;
     protected BlockNode body;
 
+    protected LocalScope scope;
+
     public DefinedFunction(boolean priv, TypeNode type,
                            String name, Params params, BlockNode body) {
         super(priv, type, name);
@@ -20,6 +22,10 @@ public class DefinedFunction extends Function {
 
     public boolean isDefined() {
         return true;
+    }
+
+    public void setScope(LocalScope scope) {
+        this.scope = scope;
     }
 
     public List<Parameter> parameters() {

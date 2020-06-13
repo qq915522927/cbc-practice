@@ -15,8 +15,25 @@ abstract public class Entity {
         this.typeNode = type;
         this.nRefered = 0;
     }
+
+    public String name() {
+        return name;
+    }
     public Location location() {
         return typeNode.location();
+    }
+
+    abstract boolean isDefined();
+    public boolean isPrivate() {
+        return isPrivate;
+    }
+    boolean isConstant() {return false;}
+
+    public void refered() {
+        nRefered++;
+    }
+    public boolean isRefered() {
+        return (nRefered > 0);
     }
 
     abstract public <T> T accept(EntityVisitor<T> visitor);

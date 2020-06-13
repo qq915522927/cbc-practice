@@ -1,5 +1,7 @@
 package net.zhiwenw.cbc.entity;
 
+import net.zhiwenw.cbc.exception.SemanticException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,5 +20,5 @@ abstract public class Scope {
     protected void addChild(LocalScope s) {
         childern.add(s);
     }
-    abstract public Entity get(String name);
+    abstract public Entity get(String name) throws SemanticException;
 }

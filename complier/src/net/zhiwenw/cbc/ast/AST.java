@@ -1,9 +1,6 @@
 package net.zhiwenw.cbc.ast;
 
-import net.zhiwenw.cbc.entity.Constant;
-import net.zhiwenw.cbc.entity.DefinedFunction;
-import net.zhiwenw.cbc.entity.DefinedVariable;
-import net.zhiwenw.cbc.entity.Entity;
+import net.zhiwenw.cbc.entity.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +9,9 @@ public class AST extends Node {
 
     protected Location source;
     protected Declarations declarations;
+
+    protected ToplevelScope scope;
+    protected ConstantTable constantTable;
 
     public AST(Location source, Declarations declarations) {
         super();
@@ -67,6 +67,14 @@ public class AST extends Node {
 
     public void add(Declarations decls) {
 
+    }
+
+    public void setScope(ToplevelScope scope) {
+        this.scope = scope;
+    }
+
+    public void setConstantTable(ConstantTable constantTable) {
+        this.constantTable = constantTable;
     }
 
     @Override

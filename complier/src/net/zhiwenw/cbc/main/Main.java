@@ -4,6 +4,7 @@ import net.zhiwenw.cbc.ast.AST;
 import net.zhiwenw.cbc.compiler.LocalResolver;
 import net.zhiwenw.cbc.entity.DefinedVariable;
 import net.zhiwenw.cbc.entity.Entity;
+import net.zhiwenw.cbc.exception.SemanticException;
 import net.zhiwenw.cbc.parser.ParseException;
 import net.zhiwenw.cbc.parser.Parser;
 
@@ -24,7 +25,7 @@ public class Main {
             ast = parser.compliation_unit();
             LocalResolver resolver = new LocalResolver();
             resolver.resolve(ast);
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException | SemanticException e) {
             System.out.println("Error:");
             e.printStackTrace();;
         }

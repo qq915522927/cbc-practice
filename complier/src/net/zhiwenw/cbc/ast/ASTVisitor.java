@@ -1,5 +1,7 @@
 package net.zhiwenw.cbc.ast;
 
+import net.zhiwenw.cbc.exception.SemanticException;
+
 public interface ASTVisitor<S, E> {
     // Statements
     public S visit(BlockNode node);
